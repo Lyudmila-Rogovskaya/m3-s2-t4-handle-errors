@@ -1,5 +1,6 @@
 package ru.yandex.practicum.controllers;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -34,11 +35,9 @@ public class DogsInteractionController {
     }
 
     @ExceptionHandler
-    public Map<String, String> handleIncorrectCount(final IncorrectCountException e) {
-        return Map.of(
-                "error", "Ошибка с параметром count.",
-                "errorMessage", e.getMessage()
-        );
+    @ResponseStatus(HttpStatus.BAD_REQUEST) // устанавливаем код ответа 400
+    public ErrorResponse handle(final IncorrectCountException e) {
+        return new ErrorResponse("Ошибка с параметром count.", e.getMessage());
     }
 
 }
